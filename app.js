@@ -26,7 +26,7 @@ const projectDetails = {
     <p class="dialog-intro">A registration workflow with explicit checks and a clear progression between steps.</p>
     <div class="detail-columns"><div><h3>THE CONTEXT</h3><p>A company registration process needs to coordinate company verification and the identification of the individual involved. Each stage has its own data and progression rules.</p></div><div><h3>MY CONTRIBUTION</h3><p>Design and implementation of the new registration flow and its progression rules, as part of full-stack engineering work across backend services and frontend interfaces.</p></div></div>
     <div class="detail-flow"><span><small>01</small>Registration request</span><span><small>02</small>Company checks through SCHUFA</span><span><small>03</small>Individual identification</span><span><small>04</small>Application status</span></div>
-    <section class="detail-section"><h3>ENGINEERING FOCUS</h3><p>Java, Spring Boot, Quarkus, Angular and REST APIs, with microservices and OAuth2 in the wider engineering context. My experience also includes using AI coding agents such as Claude to support development.</p></section>
+    <section class="detail-section"><h3>ENGINEERING FOCUS</h3><p>Java, Spring Boot, Quarkus, Angular and REST APIs, with microservices and OAuth2 in the wider engineering context. My experience also includes developing Claude-powered AI agents for backend workflows.</p></section>
     <section class="detail-section"><h3>WHAT THIS WORK TAUGHT ME</h3><p>Identity workflows are easier to reason about when the checks and transitions are explicit. Company verification and personal identification are distinct responsibilities, even when the same person takes part in both stages.</p></section>
     <p class="detail-note">High-level description of my contribution. This portfolio does not include employer source code, internal documentation or customer data.</p>`,
   paradigma: `
@@ -45,6 +45,8 @@ document.querySelectorAll('[data-project]').forEach(button => {
   button.addEventListener('click', () => {
     opener = button;
     document.querySelector('#dialog-content').innerHTML = projectDetails[button.dataset.project];
+    if (button.dataset.initialDiagram === 'components') document.querySelector('[data-diagram="components"]').click();
+    if (window.translatePortfolio) window.translatePortfolio();
     dialog.showModal();
     document.body.classList.add('dialog-open');
     dialog.scrollTop = 0;
@@ -75,6 +77,7 @@ dialog.addEventListener('click', event => {
   document.querySelector('#diagram-link').href = image.src;
   document.querySelector('#diagram-description').textContent = context ? 'Original thesis diagram · Level 1: system context.' : 'Original thesis diagram · Level 2: internal components.';
   document.querySelectorAll('[data-diagram]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+  if (window.translatePortfolio) window.translatePortfolio();
 });
 const captions = {
   operations: 'Operations: software grounded in everyday workflows.',
@@ -87,7 +90,32 @@ function setFocus(name) {
   document.querySelector(`.node-${name}`).classList.add('active');
   document.querySelector(`.branch-${name}`).classList.add('active');
   document.querySelector('.connection-caption').textContent = captions[name];
+  if (window.translatePortfolio) window.translatePortfolio();
 }
 document.querySelectorAll('[data-focus]').forEach(button => button.addEventListener('click', () => setFocus(button.dataset.focus)));
 setFocus('operations');
 document.querySelector('#year').textContent = new Date().getFullYear();
+
+const menuToggle = document.querySelector('#menu-toggle');
+menuToggle.addEventListener('click', () => {
+  const open = menuToggle.getAttribute('aria-expanded') !== 'true';
+  menuToggle.setAttribute('aria-expanded', String(open));
+  document.querySelector('#main-nav').classList.toggle('open', open);
+});
+document.querySelectorAll('#main-nav a').forEach(link => link.addEventListener('click', () => {
+  menuToggle.setAttribute('aria-expanded', 'false');
+  document.querySelector('#main-nav').classList.remove('open');
+}));
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {
+    menuToggle.setAttribute('aria-expanded', 'false');
+    document.querySelector('#main-nav').classList.remove('open');
+    menuToggle.focus();
+  }
+});
+document.querySelector('#theme-toggle').addEventListener('click', () => {
+  const dark = document.documentElement.dataset.theme !== 'dark';
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  try { localStorage.setItem('portfolio-theme', dark ? 'dark' : 'light'); } catch(e) {}
+  window.updateThemeLabel();
+});
