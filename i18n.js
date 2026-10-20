@@ -315,6 +315,11 @@ window.updateThemeLabel = function() {
 document.querySelectorAll('[data-language]').forEach(button => button.addEventListener('click', () => {
   language = button.dataset.language;
   try { localStorage.setItem('portfolio-language', language); } catch(e) {}
+  const url = new URL(location.href);
+  if (url.searchParams.has('lang')) {
+    url.searchParams.set('lang', language);
+    history.replaceState(null, '', url);
+  }
   translatePortfolio();
 }));
 translatePortfolio();
