@@ -35,3 +35,5 @@ The diagrams and project descriptions belong to this portfolio. The repository c
 Career and education details were checked against the 2026 CV. The TeamViewer entry does not include dates because the CV gives conflicting start dates. The résumé includes professional information, without the original CV's phone number or date of birth.
 
 The original thesis diagrams remain in their original language. Interface text and project descriptions are available in English and Portuguese.
+
+Rafael confirmed the Critical TechWorks end date as August 2026. TruckMotion describes the private Java/Spring Boot implementation, checked against its Maven and frontend manifests. No repository or source-code link is provided for that project.
